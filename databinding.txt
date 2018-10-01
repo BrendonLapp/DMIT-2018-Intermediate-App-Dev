@@ -1,0 +1,2 @@
+bindItem is for two way data binding - hooking things up to an input control
+item - is for one way data binding
