@@ -16,6 +16,7 @@ namespace WebApp.Admin.CRUD
 
         protected void CheckForExceptions(object sender, ObjectDataSourceStatusEventArgs e)
         {
+            //This tells the page to use this to handle all the exceptions
             MessageUserControl.HandleDataBoundException(e);
         }
     }

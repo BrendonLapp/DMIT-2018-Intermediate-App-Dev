@@ -17,16 +17,28 @@
             <hr />
             <h2>Products</h2>
 
+            <script>
+                function ConfirmDelete() {
+                    return comfirm("Are you sure that you want to permanently delete this product?");
+                }
+                //There is an extra atribute added the delete button. OnClientClick was added. This will give the user the confirm delete notification
+            </script>
+
+            <!-- Can set up my own OnItemCommands to fill the CommandNames on the buttons. Use code behind to create the commands that customly make -->
             <asp:ListView ID="ProductsListView" runat="server"
                 DataSourceID="ProductsDataSource"
                 DataKeyNames="ProductID"
                 InsertItemPosition="LastItem"
                 ItemType="NorthwindTraders.Entities.Product">
+                
                 <EditItemTemplate>
+                    <!-- Asp:Button notes-->
+                    <!--Command name atribute: Can have a value to do a particular command-->
+                    <!-- Another atribute that can be used with the asp:Buttons is CommandArgument-->
                     <tr style="">
                         <td>
-                            <asp:Button runat="server" CommandName="Update" Text="Update" ID="UpdateButton" />
-                            <asp:Button runat="server" CommandName="Cancel" Text="Cancel" ID="CancelButton" />
+                            <asp:Button runat="server" CommandName="Update" Text="Update" ID="UpdateButton" /> 
+                            <asp:Button runat="server" CommandName="Cancel" Text="Cancel" ID="CancelButton" /> 
                         </td>
                         <td>
                             <asp:TextBox Text='<%# BindItem.ProductName %>' runat="server" ID="ProductNameTextBox" /></td>
@@ -118,9 +130,10 @@
                     </tr>
                 </InsertItemTemplate>
                 <ItemTemplate>
+                    <!--Command name atribute: Can have a value to do a particular command-->
                     <tr style="">
                         <td>
-                            <asp:Button runat="server" CommandName="Delete" Text="Delete" ID="DeleteButton" />
+                            <asp:Button runat="server" CommandName="Delete" Text="Delete" ID="DeleteButton" OnClientClick="return ConfirmDelete()"/> 
                             <asp:Button runat="server" CommandName="Edit" Text="Edit" ID="EditButton" />
                         </td>
                         <td>
@@ -148,10 +161,13 @@
                     </tr>
                 </ItemTemplate>
                 <LayoutTemplate>
+                    <!-- itemPlaceHolderContainer and itemPlaceHolder are reserved names that listview will recognise-->
+                    <!-- itemPlaceHolderContainer holds the rows or what ever is rendered in the list
+                         the itemPlaceHolder is what is replaced with the items that are rendered from the ItemTemplate and what it defines-->
                     <table runat="server">
                         <tr runat="server">
                             <td runat="server">
-                                <table runat="server" id="itemPlaceholderContainer" class="table table-condensed table-hover">
+                                <table runat="server" id="itemPlaceholderContainer" class="table table-condensed table-hover"> 
                                     <tr runat="server" style="">
                                         <th runat="server"></th>
                                         <th runat="server">
@@ -182,6 +198,7 @@
 
             <!-- In the little drop down thing under asp:ObjectDataSource a little blue rectangle
                 I can click the arrow -> configure data source and follow the prompts-->
+            <!-- The CheckForExceptions is a method in the code behind of this page-->
             <asp:ObjectDataSource ID="ProductsDataSource" runat="server" 
                 OldValuesParameterFormatString="original_{0}" 
                 SelectMethod="GetProductsByPartialProductName" 
@@ -204,6 +221,3 @@
         </div>
     </div>
 </asp:Content>
-
-
-<!-- Read up on ternary operators -->
