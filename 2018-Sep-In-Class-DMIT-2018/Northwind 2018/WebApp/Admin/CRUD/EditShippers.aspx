@@ -15,7 +15,7 @@
             <asp:ListView ID="ShippersListView" runat="server" DataKeyNames="ShipperID"
                  DataSourceID="ShippersDataSource" InsertItemPosition="LastItem"
                  ItemType="NorthwindTraders.Entities.Shipper">
-                <EditItemTemplate>
+                <EditItemTemplate> <!-- This will pop up when the user clicks "Update"-->
                     <tr style="">
                         <td>
                             <asp:Button runat="server" CommandName="Update" Text="Update" ID="UpdateButton" />
@@ -36,7 +36,7 @@
                         </tr>
                     </table>
                 </EmptyDataTemplate>
-                <InsertItemTemplate>
+                <InsertItemTemplate> <!-- Will come up on the bottom of the list and will be ready to accept new additions to the data-->
                     <tr style="">
                         <td>
                             <asp:Button runat="server" CommandName="Insert" Text="Insert" ID="InsertButton" />
@@ -50,7 +50,9 @@
                             <asp:TextBox Text='<%# BindItem.Phone %>' runat="server" ID="PhoneTextBox" /></td>
                     </tr>
                 </InsertItemTemplate>
-                <ItemTemplate>
+                <ItemTemplate> <!-- The base template that sets how the rows of the list are displayed
+                                    Clicking the buttons in this template open into the related templates
+                                    EG: Edit button goes into the EditItemTemplate-->
                     <tr style="">
                         <td>
                             <asp:Button runat="server" CommandName="Delete" Text="Delete" ID="DeleteButton" />
@@ -65,7 +67,7 @@
                             <asp:Label Text='<%# Item.Phone %>' runat="server" ID="PhoneLabel" /></td>
                     </tr>
                 </ItemTemplate>
-                <LayoutTemplate>
+                <LayoutTemplate> <!-- Sets the columns headings and the layout of the list-->
                     <table runat="server">
                         <tr runat="server">
                             <td runat="server">
@@ -84,7 +86,8 @@
                             <td runat="server" style="">
                                 <asp:DataPager runat="server" ID="DataPager1">
                                     <Fields>
-                                        <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowLastPageButton="True"></asp:NextPreviousPagerField>
+                                        <asp:NextPreviousPagerField ButtonType="Button" 
+                                            ShowFirstPageButton="True" ShowLastPageButton="True"></asp:NextPreviousPagerField>
                                     </Fields>
                                 </asp:DataPager>
                             </td>
@@ -110,10 +113,17 @@
                     </tr>
                 </SelectedItemTemplate>
             </asp:ListView>
-            <asp:ObjectDataSource ID="ShippersDataSource" runat="server" DataObjectTypeName="NorthwindTraders.Entities.Shipper" DeleteMethod="RemoveShipper" InsertMethod="AddShipper" OldValuesParameterFormatString="original_{0}" SelectMethod="ListAllShippers" TypeName="NorthwindTraders.BLL.CRUD.ShipperController" UpdateMethod="UpdateShipper"
-              OnUpdated="CheckForExceptions"
-              OnDeleted="CheckForExceptions"
-              OnInserted="CheckForExceptions"  >
+
+            <asp:ObjectDataSource ID="ShippersDataSource" runat="server" 
+                DataObjectTypeName="NorthwindTraders.Entities.Shipper" 
+                DeleteMethod="RemoveShipper" InsertMethod="AddShipper" 
+                OldValuesParameterFormatString="original_{0}" 
+                SelectMethod="ListAllShippers" 
+                TypeName="NorthwindTraders.BLL.CRUD.ShipperController" 
+                UpdateMethod="UpdateShipper"
+                OnUpdated="CheckForExceptions"
+                OnDeleted="CheckForExceptions"
+                OnInserted="CheckForExceptions" >
             </asp:ObjectDataSource>
         </div>
         <div class="col-md-4">
