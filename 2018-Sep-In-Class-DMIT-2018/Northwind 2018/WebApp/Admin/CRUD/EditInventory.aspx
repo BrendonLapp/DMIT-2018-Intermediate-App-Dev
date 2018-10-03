@@ -185,9 +185,15 @@
                             <td runat="server" style="">
                                 <asp:DataPager runat="server" ID="DataPager1">
                                     <Fields>
-                                        <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False"></asp:NextPreviousPagerField>
+                                        <asp:NextPreviousPagerField ButtonType="Button" 
+                                            ShowFirstPageButton="True" 
+                                            ShowNextPageButton="False" 
+                                            ShowPreviousPageButton="False"></asp:NextPreviousPagerField>
                                         <asp:NumericPagerField></asp:NumericPagerField>
-                                        <asp:NextPreviousPagerField ButtonType="Button" ShowLastPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False"></asp:NextPreviousPagerField>
+                                        <asp:NextPreviousPagerField ButtonType="Button" 
+                                            ShowLastPageButton="True" 
+                                            ShowNextPageButton="False" 
+                                            ShowPreviousPageButton="False"></asp:NextPreviousPagerField>
                                     </Fields>
                                 </asp:DataPager>
                             </td>

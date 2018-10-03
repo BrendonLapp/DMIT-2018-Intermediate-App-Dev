@@ -12,9 +12,10 @@
     <div class="row">
         <div class="col-md-8">
             <h2>Shippers for Northwind Traders</h2>
+            <!-- InsertItemPosition affects where the InsertItemTemplate is rendered-->
             <asp:ListView ID="ShippersListView" runat="server" DataKeyNames="ShipperID"
                  DataSourceID="ShippersDataSource" InsertItemPosition="LastItem"
-                 ItemType="NorthwindTraders.Entities.Shipper">
+                 ItemType="NorthwindTraders.Entities.Shipper"> 
                 <EditItemTemplate> <!-- This will pop up when the user clicks "Update"-->
                     <tr style="">
                         <td>
