@@ -1,7 +1,6 @@
 <Query Kind="Statements">
   <Connection>
     <ID>d76d1978-6d4f-46bd-bfb1-1bc25957ae01</ID>
-    <Persist>true</Persist>
     <Server>.</Server>
     <Database>GroceryList</Database>
   </Connection>
@@ -53,9 +52,54 @@ Hint: You will need to use type casting (decimal). Use of the ternary operator w
 
 /*5. Select all orders a picker has done on a particular week (Sunday through Saturday). Group and sorted by picker. 
 Sort the orders by picked date. Hint: you will need to use the join operator. */
-
-
-
+var Sunday = DateTime.Parse("Dec 17, 2017"); //Start of midnight of the day
+var Saturday = DateTime.Parse("Dec 25, 2017"); //Start of midnight of the day
+var result = from p in Pickers
+			 orderby p.LastName + ", " + p.FirstName
+			 select new
+			 {
+			 	FullName = p.LastName + ", " + p.FirstName,
+				Orders = from order in p.Store.Orders
+						 where order.PickerID == p.PickerID
+						 	&& order.OrderDate >= Sunday 
+							&& order.OrderDate <= Saturday
+						 orderby order.OrderDate
+						 select new
+						 {
+						 	ID = order.OrderID,
+							Date = order.OrderDate,
+							PickerId = order.PickerID
+						 }
+			 };
+result.Dump();
 
 /*6. List all the products a customer (use Customer #1) has purchased and the number of times the product was purchased. 
 Sort the products by number of times purchased (highest to lowest) then description.*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
