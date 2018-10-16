@@ -1,8 +1,9 @@
 <Query Kind="Statements">
   <Connection>
-    <ID>d76d1978-6d4f-46bd-bfb1-1bc25957ae01</ID>
+    <ID>7e6177ca-e5d8-4264-9112-c41128c00b49</ID>
+    <Persist>true</Persist>
     <Server>.</Server>
-    <Database>GroceryList</Database>
+    <Database>Northwind_DMIT2018</Database>
   </Connection>
 </Query>
 
@@ -81,9 +82,22 @@ Sort the products by number of times purchased (highest to lowest) then descript
 
 
 
+//REMOVE THIS LATER
+//TODO 9: Most Popular product sold (qty), by year and month
 
-
-
+//TODO 10: Get the product and total quantity sold, grouped by year and month --This is in Northwind
+var ProductQuantityByYearAndMonth =
+	from soldItem in OrderDetails
+	group soldItem by new //The following anonymous object will be the KEY for the group by clause
+						{
+							soldItem.Order.OrderDate.Value.Year,
+							soldItem.Order.OrderDate.Value.Month
+						}
+	into groupedOrderDetails
+	orderby groupedOrderDetails.Key.Year, groupedOrderDetails.Key.Month
+	select groupedOrderDetails;
+ProductQuantityByYearAndMonth.Dump();
+		
 
 
 
