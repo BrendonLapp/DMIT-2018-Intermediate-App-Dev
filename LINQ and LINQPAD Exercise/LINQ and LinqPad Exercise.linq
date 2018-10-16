@@ -95,7 +95,18 @@ var ProductQuantityByYearAndMonth =
 						}
 	into groupedOrderDetails
 	orderby groupedOrderDetails.Key.Year, groupedOrderDetails.Key.Month
-	select groupedOrderDetails;
+	//select groupedOrderDetails;
+	select new 
+	{
+		Year = groupedOrderDetails.Key.Year,
+		Month = groupedOrderDetails.Key.Year,
+		//Items = groupedOrderDetail
+		Items = from orderDetailItem in groupedOrderDetails
+				select new //orderDetailItem
+				{
+					Product = orderDetailItem.Product.ProductName
+				}
+	};
 ProductQuantityByYearAndMonth.Dump();
 		
 
