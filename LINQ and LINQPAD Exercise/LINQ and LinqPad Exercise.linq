@@ -10,7 +10,7 @@
 /* 1. Create a product list which indicates what products are purchased by our customers and how many
 times that product was purchased. Sort the list by most popular product by alphabetic description. */
 var productList = from product in Products
-					orderby product.Description
+					orderby product.OrderLists.Count descending
 					select new 
 					{
 						Product = product.Description,
@@ -22,34 +22,70 @@ productList.Dump();
 for customers who have shopped at our stores. List by the store. Include the store location as well as the
 customer's complete address. Do NOT include the customer name in the results. List the customer address
 only once for a particular store. */
-var mailingList = from store in Stores
+var mailingList =   from store in Stores
+					orderby store.Location ascending
 					select new 
 					{
 						Location = store.Location,
-						Clients = from customerList in Customers
-									group customerList by customerList.Orders.StoreID into customerStore
-									select new 
-									{
-										address = customerList.Address,
-										city = customerList.City,
-										province = customerList.Province
-									}
+						Clients = 	(from o in Orders
+								  	where store.StoreID == o.StoreID
+								  	select new
+								  	{
+								  		Address = o.Customer.Address,
+										City = o.Customer.City,
+										Province = o.Customer.Province
+								  	}).Distinct()
 					};
 mailingList.Dump();
-
-						
-
+					
 /*3. Create a Daily Sales per Store request for a specified month. Sort stores by city by location. For Sales, 
 show order date, number of orders, total sales without GST tax and total GST tax.*/
-
-
-
+var MonthStart = DateTime.Parse("Dec 01, 2017");
+var MonthEnd = DateTime.Parse("Dec 31, 2017");
+var DailySales =	from store in Stores
+					orderby store.City ascending
+					select new
+					{
+						City = store.City,
+						Location = store.Location,
+						sales = from order in store.Orders
+								group order by order.OrderDate into oDates
+								where oDates.Key >= MonthStart
+									&& oDates.Key <= MonthEnd
+								orderby oDates.Count() descending
+								select new
+								{
+									date = oDates.Key,
+									numberoforders = oDates.Count(),
+									productsales = oDates.Sum(x => x.SubTotal),
+									GST = oDates.Sum(y => y.GST)
+								}
+					};
+DailySales.Dump();
 
 /*4. Print out all product items on a requested order (use Order #33). Group by Category and order by Product Description. 
 You do not need to format money as this would be done at the presentation level. Use the QtyPicked in your calculations. 
 Hint: You will need to use type casting (decimal). Use of the ternary operator will help. */
-
-
+var result = 	from cat in Categories
+				orderby cat.Description 
+				select new
+				{
+					Category = cat.Description,
+					OrderProducts = from product in cat.Products
+									from order in product.OrderLists
+									where order.OrderID == 33
+									select new
+									{
+										Product = order.Product.Description,
+										Price = order.Price,
+										PickedQty = order.QtyPicked,
+										Discout = order.Discount,
+										SubTotal = ((decimal)order.Price * (decimal)order.QtyPicked),
+										Tax = ((decimal)order.Price * (decimal)0.05),
+										ExtendedPrice = (((decimal)order.Price * (decimal)order.QtyPicked) + ((decimal)order.Price * (decimal)0.05))
+									}
+				};
+result.Dump();
 
 /*5. Select all orders a picker has done on a particular week (Sunday through Saturday). Group and sorted by picker. 
 Sort the orders by picked date. Hint: you will need to use the join operator. */
@@ -76,53 +112,24 @@ result.Dump();
 
 /*6. List all the products a customer (use Customer #1) has purchased and the number of times the product was purchased. 
 Sort the products by number of times purchased (highest to lowest) then description.*/
-
-
-
-
-
-
-//REMOVE THIS LATER
-//TODO 9: Most Popular product sold (qty), by year and month
-
-//TODO 10: Get the product and total quantity sold, grouped by year and month --This is in Northwind
-var ProductQuantityByYearAndMonth =
-	from soldItem in OrderDetails
-	group soldItem by new //The following anonymous object will be the KEY for the group by clause
-						{
-							soldItem.Order.OrderDate.Value.Year,
-							soldItem.Order.OrderDate.Value.Month
-						}
-	into groupedOrderDetails
-	orderby groupedOrderDetails.Key.Year, groupedOrderDetails.Key.Month
-	//select groupedOrderDetails;
-	select new 
-	{
-		Year = groupedOrderDetails.Key.Year,
-		Month = groupedOrderDetails.Key.Year,
-		//Items = groupedOrderDetail
-		Items = from orderDetailItem in groupedOrderDetails
-				select new //orderDetailItem
-				{
-					Product = orderDetailItem.Product.ProductName
-				}
-	};
-ProductQuantityByYearAndMonth.Dump();
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+var customerNumber = 1;
+var productListByCustomer =	from customer in Customers
+							where customer.CustomerID == customerNumber
+							select new
+							{
+								Customer = customer.LastName + ", " + customer.FirstName,
+								OrdersCount = customer.Orders.Count(),
+								Items =	from order in customer.Orders
+										from orderList in order.OrderLists
+										group order.OrderLists by orderList.Product into productOrderList
+										orderby productOrderList.Count() descending 
+										select new
+										{
+											Description = productOrderList.Key.Description,
+											TimesPurchased = productOrderList.Count()
+										}
+							};
+productListByCustomer.Dump();
 
 
 
